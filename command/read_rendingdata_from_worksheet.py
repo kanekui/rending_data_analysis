@@ -1,10 +1,10 @@
 import openpyxl
 from RendingDTO import RendingDataSet
-import IExecutable
-import RendingDTO
+from IExecutable import IExecutable
+from RendingDTO import RendingDTO
 
 
-class ReadFromExcelCommand(IExecutable):
+class ReadFromRendingDataFromWorksheetCommand(IExecutable):
 
     def execute(self, dto: RendingDataSet) -> RendingDataSet:
 
@@ -17,6 +17,7 @@ class ReadFromExcelCommand(IExecutable):
         # データ行を取得
         for row in dto.worksheet.iter_rows(min_row=2, values_only=True):
             code = row[0][:4]
+            print(code)
             existing_data = next((data for data in data_list if data.code == code), None)
 
             if existing_data:
@@ -34,7 +35,5 @@ class ReadFromExcelCommand(IExecutable):
                     sale_purchase_ratio=row[7]
                 )
                 data_list.append(data)
-
-
 
         return dto

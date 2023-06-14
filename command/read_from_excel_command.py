@@ -1,6 +1,6 @@
 import openpyxl
 from RendingDTO import RendingDataSet
-import IExecutable
+from IExecutable import IExecutable
 
 
 class ReadFromExcelCommand(IExecutable):
@@ -10,5 +10,5 @@ class ReadFromExcelCommand(IExecutable):
     def execute(self, dto: RendingDataSet) -> RendingDataSet:
         workbook = openpyxl.load_workbook(dto.file_path)
         dto.worksheet = workbook[self.DEFAULT_SHEET_NAME]
-
+        print(dto.worksheet)
         return dto
