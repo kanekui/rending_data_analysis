@@ -17,7 +17,16 @@ class WriteToExcelCommand(IExecutable):
         worksheet = workbook.active
 
         for line in extracted_lines:
-            worksheet.append(line.split(","))
+            row_data = line.split(",")
+            converted_data = []
+            for value in row_data:
+                try:
+                    converted_value = int(value)
+                except ValueError:
+                    converted_value = value
+                converted_data.append(converted_value)
+            worksheet.append(converted_data)
+
         workbook.save(output_file_path)
 
         return dto
