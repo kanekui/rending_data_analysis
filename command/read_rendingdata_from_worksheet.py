@@ -9,15 +9,18 @@ class ReadFromRendingDataFromWorksheetCommand(IExecutable):
     def execute(self, dto: RendingDataSet) -> RendingDataSet:
 
         # ヘッダー行を取得
-        headers = [cell.value for cell in dto.worksheet]
+        #print(dto.worksheet[1])
+        headers = [cell.value for cell in dto.worksheet[1]]
+        print(headers)
 
         # データを格納するリストを作成
         data_list = []
 
         # データ行を取得
         for row in dto.worksheet.iter_rows(min_row=2, values_only=True):
-            code = row[0][:4]
-            print(code)
+            print(row)
+            code = row[2][:4]
+            # print(code)
             existing_data = next((data for data in data_list if data.code == code), None)
 
             if existing_data:

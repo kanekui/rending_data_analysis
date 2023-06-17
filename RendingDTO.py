@@ -17,6 +17,7 @@ class RendingDTO:
 
 class RendingDataSet:
     worksheet: openpyxl.worksheet.worksheet.Worksheet
-    file_path: str
+    pdf_file_path: str
+    weekly_outstanding_data: List[List[str]]
     stock_list = []
 
