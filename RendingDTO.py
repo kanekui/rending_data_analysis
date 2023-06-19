@@ -5,14 +5,19 @@ from dataclasses import dataclass
 
 @dataclass
 class RendingDTO:
-    code: str
-    outstanding_sales: int
-    daily_change_sales: int
-    ratio_to_listed_sales: float
-    outstanding_purchases: int
-    daily_change_purchases: int
-    ratio_to_listed_purchases: float
-    sale_purchase_ratio: float
+    name: str                                       # 銘柄名
+    code: int                                       # 証券コード
+    outstanding_sales: int                          # 売り残高
+    weekly_change_sales: int                        # 売り残高増減
+    outstanding_purchases: int                      # 買い残高
+    weekly_change_purchases: int                    # 買い残高増減
+    yahoo_com_float: int                            # 浮動株数
+    yahoo_com_shares_outstanding: int               # 発行済み株数
+    sale_purchase_ratio: float                      # 売り残高/買い残高
+    ratio_to_float_sales: float                     # 売り残高/浮動株
+    ratio_to_float_purchases: float                 # 買い残高/浮動株
+    ratio_to_shares_outstanding_sale: float         # 売り残高/発行済み株数
+    ratio_to_shares_outstanding_purchases: float    # 買い残高/発行済み株数
 
 
 class RendingDataSet:
@@ -20,4 +25,15 @@ class RendingDataSet:
     pdf_file_path: str
     weekly_outstanding_data: List[List[str]]
     stock_list = []
+
+
+class YApiDTO:
+    float_shares: int
+    shares_outstanding: int
+
+    def __init__(self, float_shares, shares_outstanding):
+        self.float_shares = float_shares
+        self.shares_outstanding = shares_outstanding
+
+
 
