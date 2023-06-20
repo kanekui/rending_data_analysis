@@ -2,6 +2,7 @@ import PyPDF2
 from RendingDTO import RendingDataSet, RendingDTO
 from IExecutable import IExecutable
 
+
 class ReadFromPDFCommand(IExecutable):
     def execute(self, dto: RendingDataSet) -> RendingDataSet:
         file_path = dto.pdf_file_path
