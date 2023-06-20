@@ -35,7 +35,11 @@ class ReadFromPDFCommand(IExecutable):
         for line in extracter_lines_for_rendingdt[1:]:
             if len(line) < 7:
                 continue
-            code = int(line[1]) if str(line[1])[-1] == '0' else None
+            if str(line[1])[-1] == '0':
+                code = int(line[1][0:4])
+            else:
+                code = None
+
             if code is not None:
                 if line[5] == '0':
                     sale_purchase_ratio = 0

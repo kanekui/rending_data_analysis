@@ -20,6 +20,7 @@ if __name__ == '__main__':
     # コマンドライン引数の解析
     yahoo = False
     pdf_file_path = None
+    print("start")
 
     if len(sys.argv) > 1:
         if sys.argv[1] == "-Y":
@@ -35,8 +36,10 @@ if __name__ == '__main__':
 
     # コマンドを作成
     if yahoo:
+        print("yahoo mode")
         commands = YComDataFactory().create()
     else:
+        print("default mode")
         commands = JPXDailyFactory().create()
 
     for command in commands:

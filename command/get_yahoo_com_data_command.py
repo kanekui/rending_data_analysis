@@ -33,6 +33,7 @@ class GetYComDataCommand(IExecutable):
 
     def execute(self, dto: RendingDataSet) -> RendingDataSet:
         stock_list = dto.stock_list
+        print(dto.stock_list)
 
         for rending_dto in stock_list:
             code = rending_dto.code
@@ -43,14 +44,14 @@ class GetYComDataCommand(IExecutable):
             # 取得したデータをRendingDTOに追加
             rending_dto.float_shares = yapi_data.float_shares
             rending_dto.shares_outstanding = yapi_data.shares_outstanding
-            if yapi_data.float_shares == '0':
+            if yapi_data.float_shares == 0:
                 rending_dto.ratio_to_float_sales = 0
                 rending_dto.ratio_to_float_purchases = 0
             else:
                 rending_dto.ratio_to_float_sales = rending_dto.outstanding_sales / yapi_data.float_shares
                 rending_dto.ratio_to_float_purchases = rending_dto.outstanding_purchases / yapi_data.float_shares
 
-            if yapi_data.shares_outstanding == 0 :
+            if yapi_data.shares_outstanding == 0:
                 rending_dto.ratio_to_shares_outstanding_sale = 0
                 rending_dto.ratio_to_shares_outstanding_purchases = 0
             else:
