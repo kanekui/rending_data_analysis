@@ -32,12 +32,21 @@ if __name__ == '__main__':
             mode = "DummyYahoo"
             if len(sys.argv) > 2:
                 pdf_file_path = sys.argv[2]
+
+        elis sys.argv[1] == "-m":
+            mode = "Marge"
+            if len(sys.argv) > 3:
+                pdf_file_path = sys.argv[2]
+                nissho_kyo_file_path = sys.argv[3]
+
         else:
+            mode = "default"
             pdf_file_path = sys.argv[1]
 
     # RendingDataSetのインスタンスを作成
     rending_data_set = RendingDataSet()
     rending_data_set.pdf_file_path = pdf_file_path
+    rending_data_set.nisshokyo_file_path = nissho_kyo_file_path
 
     # コマンドを作成
     commands = []
@@ -51,6 +60,10 @@ if __name__ == '__main__':
         case "DummyYahoo" :
             print("Dummyyahoo mode")
             commands = DummyYComDataFactory.create()
+
+        case "Marge" :
+            print("Marge mode")
+            commands = RendingDataMargeFactory.create()
 
         case "default":
             print("default mode")

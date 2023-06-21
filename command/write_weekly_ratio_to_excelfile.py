@@ -4,7 +4,7 @@ from IExecutable import IExecutable
 from datetime import datetime
 
 
-class WriteWeeklyDataToExcelCommand(IExecutable):
+class WriteWeeklyRatioDataToExcelCommand(IExecutable):
     def execute(self, dto: RendingDataSet) -> RendingDataSet:
         extracted_lines = dto.weekly_outstanding_data
         # ファイル名に年月日を追加
@@ -15,6 +15,7 @@ class WriteWeeklyDataToExcelCommand(IExecutable):
         workbook = openpyxl.Workbook()
         worksheet = workbook.active
 
+        # JPX銘柄別信用取引週末残高のPDFから"B"で始まる行をcsv化したの各行のワークシートへの書き出し
         for line in extracted_lines:
             row_data = line.split(",")
             converted_data = []
@@ -26,6 +27,7 @@ class WriteWeeklyDataToExcelCommand(IExecutable):
                 converted_data.append(converted_value)
             worksheet.append(converted_data)
 
+        worksheet.freeze_panes = 'A2'
         workbook.save(output_file_path)
 
         return dto

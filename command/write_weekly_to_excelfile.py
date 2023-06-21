@@ -27,6 +27,7 @@ class WriteWeeklyDataToExcelCommand(IExecutable):
                 converted_data.append(converted_value)
             worksheet.append(converted_data)
 
+        worksheet.freeze_panes = 'A2'
         workbook.save(output_file_path)
 
         return dto
