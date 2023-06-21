@@ -21,8 +21,10 @@ class RendingDTO:
 
 
 class RendingDataSet:
-    worksheet: openpyxl.worksheet.worksheet.Worksheet
+    jpx_worksheet: openpyxl.jpx_worksheet.jpx_worksheet.Worksheet
+    nisshoukyo_worksheet: openpyxl.jpx_worksheet.jpx_worksheet.Worksheet
     pdf_file_path: str
+    nisshoukyo_file_path: str
     weekly_outstanding_data: List[List[str]]
     stock_list = []
 

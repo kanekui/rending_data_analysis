@@ -3,12 +3,12 @@ from RendingDTO import RendingDataSet
 from IExecutable import IExecutable
 
 
-class ReadFromExcelCommand(IExecutable):
+class ReadNisshoKyoDataFromExcelCommand(IExecutable):
 
-    DEFAULT_SHEET_NAME = "個別銘柄信用取引残高"
+    DEFAULT_SHEET_NAME = "残高（株券等（上場））"
 
     def execute(self, dto: RendingDataSet) -> RendingDataSet:
-        workbook = openpyxl.load_workbook(dto.pdf_file_path)
+        workbook = openpyxl.load_workbook(dto.nisshoukyo_file_path)
         dto.jpx_worksheet = workbook[self.DEFAULT_SHEET_NAME]
-        print(dto.jpx_worksheet)
+        print(dto.nisshoukyo_worksheet)
         return dto

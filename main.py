@@ -13,18 +13,23 @@
 import sys
 from Factory.jpx_daily_factory import JPXDailyFactory
 from Factory.yahoo_com_data_factory import YComDataFactory
+from Factory.dummy_yahoo_com_data_factory import DummyYComDataFactory
 from RendingDTO import RendingDataSet
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     # コマンドライン引数の解析
-    yahoo = False
+    mode = "default"
     pdf_file_path = None
     print("start")
 
     if len(sys.argv) > 1:
         if sys.argv[1] == "-Y":
-            yahoo = True
+            mode = "Yahoo"
+            if len(sys.argv) > 2:
+                pdf_file_path = sys.argv[2]
+        elif sys.argv[1] == "-dY":
+            mode = "DummyYahoo"
             if len(sys.argv) > 2:
                 pdf_file_path = sys.argv[2]
         else:
@@ -35,15 +40,28 @@ if __name__ == '__main__':
     rending_data_set.pdf_file_path = pdf_file_path
 
     # コマンドを作成
-    if yahoo:
-        print("yahoo mode")
-        commands = YComDataFactory().create()
-    else:
-        print("default mode")
-        commands = JPXDailyFactory().create()
+    commands = []
+    print(mode)
+
+    match mode:
+        case "Yahoo" :
+            print("yahoo mode")
+            commands = YComDataFactory().create()
+
+        case "DummyYahoo" :
+            print("Dummyyahoo mode")
+            commands = DummyYComDataFactory.create()
+
+        case "default":
+            print("default mode")
+            commands = JPXDailyFactory().create()
+
+
 
     for command in commands:
         rending_data_set = command.execute(rending_data_set)
 
-    print(rending_data_set)
+    # print(rending_data_set.stock_list)
+
+
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
