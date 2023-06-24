@@ -6,6 +6,7 @@ from command.read_from_pdf_command import ReadFromPDFCommand
 from command.write_weekly_to_excelfile import WriteWeeklyDataToExcelCommand
 from command.get_yahoo_com_data_command import GetYComDataCommand
 from command.read_nisshokyo_data_from_excel_command import ReadNisshoKyoDataFromExcelCommand
+from command.write_weekly_ratio_to_excelfile import WriteWeeklyRatioDataToExcelCommand
 
 
 class RendingDataMargeFactory:
@@ -14,5 +15,6 @@ class RendingDataMargeFactory:
     def create():
         commands: List[IExecutable] = [ReadFromPDFCommand(),
                                        WriteWeeklyDataToExcelCommand(),
-                                       ReadNisshoKyoDataFromExcelCommand()]
+                                       ReadNisshoKyoDataFromExcelCommand(),
+                                       WriteWeeklyRatioDataToExcelCommand()]
         return commands

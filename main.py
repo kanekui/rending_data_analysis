@@ -14,6 +14,7 @@ import sys
 from Factory.jpx_daily_factory import JPXDailyFactory
 from Factory.yahoo_com_data_factory import YComDataFactory
 from Factory.dummy_yahoo_com_data_factory import DummyYComDataFactory
+from Factory.rending_data_marge_factory import RendingDataMargeFactory
 from RendingDTO import RendingDataSet
 
 # Press the green button in the gutter to run the script.
@@ -33,7 +34,7 @@ if __name__ == '__main__':
             if len(sys.argv) > 2:
                 pdf_file_path = sys.argv[2]
 
-        elis sys.argv[1] == "-m":
+        elif sys.argv[1] == "-m":
             mode = "Marge"
             if len(sys.argv) > 3:
                 pdf_file_path = sys.argv[2]

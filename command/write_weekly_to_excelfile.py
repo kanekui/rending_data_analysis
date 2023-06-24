@@ -12,6 +12,13 @@ class WriteWeeklyDataToExcelCommand(IExecutable):
         current_date = datetime.now().strftime("%Y%m%d")
         output_file_path = f'weekly_data_{current_date}.xlsx'
 
+        # 既に同名のファイルが存在する場合、別名で保存する
+        counter = 1
+        while os.path.exists(output_file_path):
+            output_file_name = f'weekly_data_{current_date}_{counter}.xlsx'
+            output_file_path = output_file_name
+            counter += 1
+
         # Excelファイルにデータを書き込む
         workbook = openpyxl.Workbook()
         worksheet = workbook.active
@@ -28,6 +35,12 @@ class WriteWeeklyDataToExcelCommand(IExecutable):
             worksheet.append(converted_data)
 
         worksheet.freeze_panes = 'A2'
+        dto.jpx_worksheet = worksheet
+
+        # ファイルを保存する前にデフォルトの "Sheet" シートを削除する
+        if 'Sheet' in workbook.sheetnames:
+            workbook.remove(workbook['Sheet'])
+
         workbook.save(output_file_path)
 
         return dto

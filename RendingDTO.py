@@ -23,6 +23,7 @@ class RendingDTO:
 class RendingDataSet:
     jpx_worksheet: openpyxl.worksheet.worksheet.Worksheet
     nisshokyo_worksheet: openpyxl.worksheet.worksheet.Worksheet
+    rending_ratio_worksheet: openpyxl.worksheet.worksheet.Worksheet
     pdf_file_path: str
     nisshokyo_file_path: str
     weekly_outstanding_data: List[List[str]]
