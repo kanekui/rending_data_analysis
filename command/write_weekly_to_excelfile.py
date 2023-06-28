@@ -1,3 +1,4 @@
+import os
 import openpyxl
 from RendingDTO import RendingDataSet
 from IExecutable import IExecutable
@@ -20,8 +21,10 @@ class WriteWeeklyDataToExcelCommand(IExecutable):
             counter += 1
 
         # Excelファイルにデータを書き込む
-        workbook = openpyxl.Workbook()
-        worksheet = workbook.active
+        dto.out_filepath = output_file_path
+        dto.excel_workbook = openpyxl.Workbook()
+        worksheet = dto.excel_workbook.create_sheet(title="JPX Data")
+        # worksheet = workbook.active
 
         for line in extracted_lines:
             row_data = line.split(",")
@@ -38,9 +41,9 @@ class WriteWeeklyDataToExcelCommand(IExecutable):
         dto.jpx_worksheet = worksheet
 
         # ファイルを保存する前にデフォルトの "Sheet" シートを削除する
-        if 'Sheet' in workbook.sheetnames:
-            workbook.remove(workbook['Sheet'])
+        if 'Sheet' in dto.excel_workbook.sheetnames:
+            dto.excel_workbook.remove(dto.excel_workbook['Sheet'])
 
-        workbook.save(output_file_path)
+        # workbook.save(output_file_path)
 
         return dto

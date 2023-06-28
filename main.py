@@ -15,6 +15,7 @@ from Factory.jpx_daily_factory import JPXDailyFactory
 from Factory.yahoo_com_data_factory import YComDataFactory
 from Factory.dummy_yahoo_com_data_factory import DummyYComDataFactory
 from Factory.rending_data_marge_factory import RendingDataMargeFactory
+from Factory.rending_analysis_data_factory import RendingAnalysisFactory
 from RendingDTO import RendingDataSet
 
 # Press the green button in the gutter to run the script.
@@ -23,6 +24,9 @@ if __name__ == '__main__':
     mode = "default"
     pdf_file_path = None
     print("start")
+
+    pdf_file_path = ""
+    nissho_kyo_file_path = ""
 
     if len(sys.argv) > 1:
         if sys.argv[1] == "-Y":
@@ -39,6 +43,11 @@ if __name__ == '__main__':
             if len(sys.argv) > 3:
                 pdf_file_path = sys.argv[2]
                 nissho_kyo_file_path = sys.argv[3]
+
+        elif sys.argv[1] == "-f":
+            mode = "Float"
+            pdf_file_path = sys.argv[2]
+            nissho_kyo_file_path = sys.argv[3]
 
         else:
             mode = "default"
@@ -65,6 +74,10 @@ if __name__ == '__main__':
         case "Marge" :
             print("Marge mode")
             commands = RendingDataMargeFactory.create()
+
+        case "Float" :
+            print("Float mode")
+            commands = RendingAnalysisFactory.create()
 
         case "default":
             print("default mode")

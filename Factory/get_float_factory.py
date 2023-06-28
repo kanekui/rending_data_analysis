@@ -8,14 +8,12 @@ from command.get_yahoo_com_data_command import GetYComDataCommand
 from command.read_nisshokyo_data_from_excel_command import ReadNisshoKyoDataFromExcelCommand
 from command.write_weekly_ratio_to_excelfile import WriteWeeklyCalcDataToExcelCommand
 from command.save_excel_file import SaveToExcelCommand
+from command.get_float_and_outstanding_command import GetFloatAndOutstandingCommand
 
-
-class RendingDataMargeFactory:
+class GetFloatAndOutstandingFactory:
 
     @staticmethod
     def create():
         commands: List[IExecutable] = [ReadFromPDFCommand(),
-                                       ReadNisshoKyoDataFromExcelCommand(),
-                                       WriteWeeklyDataToExcelCommand(),
-                                       WriteWeeklyCalcDataToExcelCommand()]
+                                       GetFloatAndOutstandingCommand()]
         return commands
