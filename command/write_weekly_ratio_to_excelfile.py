@@ -19,7 +19,6 @@ class WriteWeeklyCalcDataToExcelCommand:
         rending_ratio_worksheet.append(headers)
 
         code_column = "B"  # コードが格納されている列のアルファベットを指定
-        #code_column = dto.jpx_worksheet.cell(row=1, column=1).column_letter
 
         for row_index, row in enumerate(dto.jpx_worksheet.iter_rows(min_row=2, values_only=True), start=2):
             code_cell = dto.jpx_worksheet[code_column + str(row_index)]

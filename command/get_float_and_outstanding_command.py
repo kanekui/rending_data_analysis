@@ -5,6 +5,10 @@ from IExecutable import IExecutable
 import re
 import time
 
+
+#  発行済み株数、浮動株数を取得する
+#  dtoとして渡されるRendingDataSet内のRendingDTO毎に発行済み株数、浮動株数を値を取得し、
+#  そのRendingDTOに格納する。
 class GetFloatAndOutstandingCommand(IExecutable):
     def execute(self, dto: RendingDataSet) -> RendingDataSet:
         for stock in dto.stock_list:

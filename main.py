@@ -13,7 +13,6 @@
 import sys
 from Factory.jpx_daily_factory import JPXDailyFactory
 from Factory.yahoo_com_data_factory import YComDataFactory
-from Factory.dummy_yahoo_com_data_factory import DummyYComDataFactory
 from Factory.rending_data_marge_factory import RendingDataMargeFactory
 from Factory.rending_analysis_data_factory import RendingAnalysisFactory
 from RendingDTO import RendingDataSet
@@ -31,10 +30,6 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         if sys.argv[1] == "-Y":
             mode = "Yahoo"
-            if len(sys.argv) > 2:
-                pdf_file_path = sys.argv[2]
-        elif sys.argv[1] == "-dY":
-            mode = "DummyYahoo"
             if len(sys.argv) > 2:
                 pdf_file_path = sys.argv[2]
 
@@ -66,10 +61,6 @@ if __name__ == '__main__':
         case "Yahoo" :
             print("yahoo mode")
             commands = YComDataFactory().create()
-
-        case "DummyYahoo" :
-            print("Dummyyahoo mode")
-            commands = DummyYComDataFactory.create()
 
         case "Marge" :
             print("Marge mode")
