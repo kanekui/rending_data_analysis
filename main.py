@@ -15,7 +15,9 @@ from Factory.jpx_daily_factory import JPXDailyFactory
 from Factory.yahoo_com_data_factory import YComDataFactory
 from Factory.rending_data_marge_factory import RendingDataMargeFactory
 from Factory.rending_analysis_data_factory import RendingAnalysisFactory
+from Factory.get_float_factory import GetFloatAndOutstandingFactory
 from RendingDTO import RendingDataSet
+
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
@@ -44,6 +46,9 @@ if __name__ == '__main__':
             pdf_file_path = sys.argv[2]
             nissho_kyo_file_path = sys.argv[3]
 
+        elif sys.argv[1] == "-s":
+            mode = "SingleFloat"
+
         else:
             mode = "default"
             pdf_file_path = sys.argv[1]
@@ -69,6 +74,10 @@ if __name__ == '__main__':
         case "Float" :
             print("Float mode")
             commands = RendingAnalysisFactory.create()
+
+        case "SingleFloat":
+            print("Single Float")
+            commands = GetFloatAndOutstandingFactory.create()
 
         case "default":
             print("default mode")

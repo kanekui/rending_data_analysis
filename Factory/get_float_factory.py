@@ -7,6 +7,5 @@ class GetFloatAndOutstandingFactory:
 
     @staticmethod
     def create():
-        commands: List[IExecutable] = [ReadFromPDFCommand(),
-                                       GetFloatAndOutstandingCommand()]
+        commands: List[IExecutable] = [GetFloatAndOutstandingCommand()]
         return commands

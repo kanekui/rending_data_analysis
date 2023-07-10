@@ -107,10 +107,10 @@ def get_rakten_float_and_outstanding(dto: RendingDTO) -> RendingDTO:
                 value = next_td.text
                 # カンマを取り除いて数値に変換
                 value = re.sub(r'[^\d.]', '', value)
-                if value.endswith('.0'):  # ".0"で終わる場合は整数として扱う
-                    value = value[:-2]  # ".0"を削除
+                value = value[:-2]  # ".0"を削除
                 dto.stock_shares_outstanding = int(value)  # 整数に変換して格納
-                print(dto.stock_shares_outstanding)
+                if dto.code == "7692":
+                    print(dto.stock_shares_outstanding)
 
             target_th = soup.find('th', text='浮動株数')
 
@@ -120,10 +120,10 @@ def get_rakten_float_and_outstanding(dto: RendingDTO) -> RendingDTO:
                 value = next_td.text
                 # カンマを取り除いて数値に変換
                 value = re.sub(r'[^\d.]', '', value)
-                if value.endswith('.0'):  # ".0"で終わる場合は整数として扱う
-                    value = value[:-2]  # ".0"を削除
+                value = value[:-2]  # ".0"を削除
                 dto.stock_float = int(value)  # 整数に変換して格納
-                print(dto.stock_float)
+                if dto.code == "7692":
+                    print(dto.stock_float)
 
             # time.sleep(1)  # 3秒待機
             return dto
