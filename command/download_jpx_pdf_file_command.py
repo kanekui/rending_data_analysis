@@ -15,7 +15,7 @@ class GetFloatAndOutstandingCommand(IExecutable):
         print(url)
         response = requests.get(url)
         soup = BeautifulSoup(response.text, 'html.parser')
-        table = soup.find('table', class_='js-table-values')
+        table = soup.find('table', class_='component-file')
 
         target_th = soup.find('th', text='発行済株式数')
 
