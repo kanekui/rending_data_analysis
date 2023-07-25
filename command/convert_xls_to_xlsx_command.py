@@ -3,7 +3,8 @@ import pandas as pd
 from IExecutable import IExecutable
 from RendingDTO import RendingDataSet
 
-
+#日証協のexcelファイル(xls)をxlsxファイルに変換するコマンドクラス
+#openpyxlがxlsxファイルしか読めないため、そのためだけにpandasで変換…
 class ConvertXLSCommand(IExecutable):
     def execute(self, dto: RendingDataSet) -> RendingDataSet:
         file_path = dto.nisshokyo_file_path

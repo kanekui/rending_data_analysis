@@ -3,7 +3,7 @@ from IExecutable import IExecutable
 from RendingDTO import RendingDataSet
 import PyPDF2
 
-#JPXのpdfファイルと日証協のexcelファイルが存在していることを確認する
+#JPXのpdfファイルと日証協のexcelファイルが存在していることを確認するコマンドクラス
 class CheckFileExistCommand(IExecutable):
     def execute(self, dto: RendingDataSet) -> RendingDataSet:
         nisshokyo_file_path = dto.nisshokyo_file_path
