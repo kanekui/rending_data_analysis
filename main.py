@@ -11,11 +11,14 @@
 # 変えたいところだけ新規実装で差し替えればよくてハッピー
 
 import sys
+import datetime
+import os
 from Factory.jpx_daily_factory import JPXDailyFactory
 from Factory.yahoo_com_data_factory import YComDataFactory
 from Factory.rending_data_marge_factory import RendingDataMargeFactory
 from Factory.rending_analysis_data_factory import RendingAnalysisFactory
 from Factory.get_float_factory import GetFloatAndOutstandingFactory
+from Factory.auto_rending_analysis_data_factory import AutoRendingAnalysisFactory
 from RendingDTO import RendingDataSet
 
 
@@ -28,6 +31,8 @@ if __name__ == '__main__':
 
     pdf_file_path = ""
     nissho_kyo_file_path = ""
+
+
 
     if len(sys.argv) > 1:
         if sys.argv[1] == "-Y":
@@ -45,6 +50,9 @@ if __name__ == '__main__':
             mode = "Float"
             pdf_file_path = sys.argv[2]
             nissho_kyo_file_path = sys.argv[3]
+
+        elif sys.argv[1] == "-a":
+            mode = "Auto"
 
         elif sys.argv[1] == "-s":
             mode = "SingleFloat"
@@ -73,7 +81,46 @@ if __name__ == '__main__':
 
         case "Float" :
             print("Float mode")
+
             commands = RendingAnalysisFactory.create()
+
+        case "Auto" :
+            print("Auto mode")
+            # 本日の日付と曜日を取得
+            today = datetime.datetime.today()
+            weekday = today.weekday()  # 0: 月曜日, 1: 火曜日, 2: 水曜日, 3: 木曜日, 4: 金曜日, 5: 土曜日, 6: 日曜日
+            date_str = today.strftime('%m%d')
+
+            four_days_ago = today - datetime.timedelta(days=4)
+            four_days_ago_str = four_days_ago.strftime('%m%d')
+            five_days_ago = today - datetime.timedelta(days=5)
+            five_days_ago_str = five_days_ago.strftime('%m%d')
+            six_days_ago = today - datetime.timedelta(days=6)
+            six_days_ago_str = six_days_ago.strftime('%m%d')
+            eleven_days_ago = today - datetime.timedelta(days=11)
+            eleven_days_ago_str = eleven_days_ago.strftime('%m%d')
+            twelve_days_ago = today - datetime.timedelta(days=12)
+            twelve_days_ago_str = twelve_days_ago.strftime('%m%d')
+
+
+            current_folder_path = os.getcwd()
+            if weekday == 1:  # 火曜日の場合
+                rending_data_set.pdf_file_path = current_folder_path + "\\" + f'syumatsu2023{four_days_ago_str}00.pdf'
+                rending_data_set.pdf_file_url = f'https://www.jpx.co.jp/markets/statistics-equities/margin/tvdivq0000001rnl-att/syumatsu2023{four_days_ago_str}00.pdf'
+                rending_data_set.nisshokyo_file_path = current_folder_path + "\\" + f'2023{eleven_days_ago_str}z.xls'
+                rending_data_set.nisshokyo_file_url = f'https://www.jsda.or.jp/shiryoshitsu/toukei/kabu-taiw/files/2023{eleven_days_ago_str}z.xls'
+            elif weekday == 2:  # 水曜日の場合(月曜or火曜が祝日)
+                rending_data_set.pdf_file_path = current_folder_path + "\\" + f'syumatsu2023{five_days_ago_str}00.pdf'
+                rending_data_set.pdf_file_url = f'https://www.jpx.co.jp/markets/statistics-equities/margin/tvdivq0000001rnl-att/syumatsu2023{five_days_ago_str}00.pdf'
+                rending_data_set.nisshokyo_file_path = current_folder_path + "\\" + f'2023{twelve_days_ago_str}z.xls'
+                rending_data_set.nisshokyo_file_url = f'https://www.jsda.or.jp/shiryoshitsu/toukei/kabu-taiw/files/2023{twelve_days_ago_str}z.xls'
+            elif weekday == 3:  # 木曜日の場合
+                rending_data_set.pdf_file_path = current_folder_path + "\\" + f'syumatsu2023{six_days_ago_str}00.pdf'
+                rending_data_set.pdf_file_url = f'https://www.jpx.co.jp/markets/statistics-equities/margin/tvdivq0000001rnl-att/syumatsu2023{six_days_ago_str}00.pdf'
+                rending_data_set.nisshokyo_file_path = current_folder_path + "\\" + f'2023{six_days_ago_str}z.xls'
+                rending_data_set.nisshokyo_file_url = f'https://www.jsda.or.jp/shiryoshitsu/toukei/kabu-taiw/files/2023{six_days_ago_str}z.xls'
+
+            commands = AutoRendingAnalysisFactory.create()
 
         case "SingleFloat":
             print("Single Float")

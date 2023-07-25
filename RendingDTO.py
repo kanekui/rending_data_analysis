@@ -27,6 +27,8 @@ class RendingDataSet:
     rending_ratio_worksheet: openpyxl.worksheet.worksheet.Worksheet
     pdf_file_path: str
     nisshokyo_file_path: str
+    pdf_file_url: str
+    nisshokyo_file_url: str
     out_filepath: str
     weekly_outstanding_data: List[List[str]]
     stock_list: Dict[str, RendingDTO] = {}
