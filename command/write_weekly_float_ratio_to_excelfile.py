@@ -45,7 +45,7 @@ class WriteWeeklyRatioDataToExcelCommand:
                         diff_lending += int(nisshokyo_row[4].value)
 
                     if nisshokyo_row[4].value != '-':
-                        diff_lending += int(nisshokyo_row[4].value)
+                        diff_sales_and_lending += int(nisshokyo_row[4].value)
 
             # print(row_index)
             # print(code)
