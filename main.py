@@ -9,6 +9,8 @@
 # foreachでバンバンバンとマグナム銃を撃つイメージ。
 # こうすることでやりたいことが変わったときに達磨落としのようにそこだけコマンド差し替えられる。
 # 変えたいところだけ新規実装で差し替えればよくてハッピー
+# 引数"-a"で直近の東証の信用残と日証協の貸借のpdf,excelをダウンロードし、楽天の全銘柄の浮動株数、発行済み株数をスクレイピングして
+# 各データを一つのExcelにまとめる
 
 import sys
 import datetime
@@ -52,6 +54,7 @@ if __name__ == '__main__':
             nissho_kyo_file_path = sys.argv[3]
 
         elif sys.argv[1] == "-a":
+            # 普段はこれを使う。勝手にダウンロードしてくれて一番便利だから。
             mode = "Auto"
 
         elif sys.argv[1] == "-s":
@@ -81,12 +84,15 @@ if __name__ == '__main__':
 
         case "Float" :
             print("Float mode")
-
             commands = RendingAnalysisFactory.create()
 
         case "Auto" :
             print("Auto mode")
-            # 本日の日付と曜日を取得
+            # 直近の東証の信用残と日証協の貸借のpdf,excelをダウンロードし、楽天の全銘柄の浮動株数、
+            # 発行済み株数をスクレイピングして各データを一つのExcelにまとめる
+
+            # まずは本日の日付と曜日を取得してダウンロードファイルの日付を特定する
+            # ここ、コマンドにしときたいなー
             today = datetime.datetime.today()
             weekday = today.weekday()  # 0: 月曜日, 1: 火曜日, 2: 水曜日, 3: 木曜日, 4: 金曜日, 5: 土曜日, 6: 日曜日
             date_str = today.strftime('%m%d')
