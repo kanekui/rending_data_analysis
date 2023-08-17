@@ -1,8 +1,3 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
 # 貸株+信用売り、信用買いと浮動株で比率を個別銘柄ごとに集計するスクリプト
 # 手続き型でしかないため、コマンドパタンで実装。
 # Factoryで各個別手続きコマンドをインスタンス化し、コマンドリストに弾込めしてもらい、
@@ -16,14 +11,13 @@
 # 各データを一つのExcelにまとめる
 
 import sys
-import datetime
-import os
 from Factory.jpx_daily_factory import JPXDailyFactory
 from Factory.yahoo_com_data_factory import YComDataFactory
 from Factory.rending_data_marge_factory import RendingDataMargeFactory
 from Factory.rending_analysis_data_factory import RendingAnalysisFactory
 from Factory.get_float_factory import GetFloatAndOutstandingFactory
 from Factory.auto_rending_analysis_data_factory import AutoRendingAnalysisFactory
+from Factory.auto_friday_holiday_rending_analysis_data_factory import AutoFridayHolidayRendingAnalysisFactory
 from RendingDTO import RendingDataSet
 
 
@@ -61,6 +55,9 @@ if __name__ == '__main__':
         elif sys.argv[1] == "-s":
             mode = "SingleFloat"
 
+        elif sys.argv[1] == "-af":
+            mode = "AutoFridayHoliday"
+
         else:
             mode = "default"
             pdf_file_path = sys.argv[1]
@@ -92,42 +89,11 @@ if __name__ == '__main__':
             # 直近の東証の信用残と日証協の貸借のpdf,excelをダウンロードし、楽天の全銘柄の浮動株数、
             # 発行済み株数をスクレイピングして各データを一つのExcelにまとめる
 
-            # まずは本日の日付と曜日を取得してダウンロードファイルの日付を特定する
-            # ここ、コマンドにしときたいなー
-            today = datetime.datetime.today()
-            weekday = today.weekday()  # 0: 月曜日, 1: 火曜日, 2: 水曜日, 3: 木曜日, 4: 金曜日, 5: 土曜日, 6: 日曜日
-            date_str = today.strftime('%m%d')
-
-            four_days_ago = today - datetime.timedelta(days=4)
-            four_days_ago_str = four_days_ago.strftime('%m%d')
-            five_days_ago = today - datetime.timedelta(days=5)
-            five_days_ago_str = five_days_ago.strftime('%m%d')
-            six_days_ago = today - datetime.timedelta(days=6)
-            six_days_ago_str = six_days_ago.strftime('%m%d')
-            eleven_days_ago = today - datetime.timedelta(days=11)
-            eleven_days_ago_str = eleven_days_ago.strftime('%m%d')
-            twelve_days_ago = today - datetime.timedelta(days=12)
-            twelve_days_ago_str = twelve_days_ago.strftime('%m%d')
-
-
-            current_folder_path = os.getcwd()
-            if weekday == 1:  # 火曜日の場合
-                rending_data_set.pdf_file_path = current_folder_path + "\\" + f'syumatsu2023{four_days_ago_str}00.pdf'
-                rending_data_set.pdf_file_url = f'https://www.jpx.co.jp/markets/statistics-equities/margin/tvdivq0000001rnl-att/syumatsu2023{four_days_ago_str}00.pdf'
-                rending_data_set.nisshokyo_file_path = current_folder_path + "\\" + f'2023{eleven_days_ago_str}z.xls'
-                rending_data_set.nisshokyo_file_url = f'https://www.jsda.or.jp/shiryoshitsu/toukei/kabu-taiw/files/2023{eleven_days_ago_str}z.xls'
-            elif weekday == 2:  # 水曜日の場合(月曜or火曜が祝日)
-                rending_data_set.pdf_file_path = current_folder_path + "\\" + f'syumatsu2023{five_days_ago_str}00.pdf'
-                rending_data_set.pdf_file_url = f'https://www.jpx.co.jp/markets/statistics-equities/margin/tvdivq0000001rnl-att/syumatsu2023{five_days_ago_str}00.pdf'
-                rending_data_set.nisshokyo_file_path = current_folder_path + "\\" + f'2023{twelve_days_ago_str}z.xls'
-                rending_data_set.nisshokyo_file_url = f'https://www.jsda.or.jp/shiryoshitsu/toukei/kabu-taiw/files/2023{twelve_days_ago_str}z.xls'
-            elif weekday == 3:  # 木曜日の場合
-                rending_data_set.pdf_file_path = current_folder_path + "\\" + f'syumatsu2023{six_days_ago_str}00.pdf'
-                rending_data_set.pdf_file_url = f'https://www.jpx.co.jp/markets/statistics-equities/margin/tvdivq0000001rnl-att/syumatsu2023{six_days_ago_str}00.pdf'
-                rending_data_set.nisshokyo_file_path = current_folder_path + "\\" + f'2023{six_days_ago_str}z.xls'
-                rending_data_set.nisshokyo_file_url = f'https://www.jsda.or.jp/shiryoshitsu/toukei/kabu-taiw/files/2023{six_days_ago_str}z.xls'
-
             commands = AutoRendingAnalysisFactory.create()
+
+        case "AutoFridayHoliday" :
+            print("Auto Friday Holiday")
+            commands = AutoFridayHolidayRendingAnalysisFactory.create()
 
         case "SingleFloat":
             print("Single Float")

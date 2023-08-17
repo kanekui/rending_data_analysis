@@ -6,10 +6,10 @@ from command.read_nisshokyo_data_from_excel_command import ReadNisshoKyoDataFrom
 from command.write_weekly_float_ratio_to_excelfile import WriteWeeklyRatioDataToExcelCommand
 from command.convert_xls_to_xlsx_command import ConvertXLSCommand
 from command.download_files_command import DownloadFilesCommand
-from command.iofilename_create_command import IOfilenameCreateCommand
+from command.friday_holiday_iofilename_create_command import FridayHolidayIOfilenameCreateCommand
 
 
-class AutoRendingAnalysisFactory:
+class AutoFridayHolidayRendingAnalysisFactory:
 
     @staticmethod
     def create():
@@ -20,7 +20,7 @@ class AutoRendingAnalysisFactory:
         #4.3でxlsx化した銘柄別株券等貸借週末残高のデータを読み込み
         #5.2のデータをxlsxで保存
         #6.信用売り+貸株を合計してから対浮動株数、対発行済み株数で比を取ってからxlsxに保存
-        commands: List[IExecutable] = [IOfilenameCreateCommand(),
+        commands: List[IExecutable] = [FridayHolidayIOfilenameCreateCommand(),
                                        DownloadFilesCommand(),
                                        ReadFromPDFAndRakutenCommand(),
                                        ConvertXLSCommand(),
