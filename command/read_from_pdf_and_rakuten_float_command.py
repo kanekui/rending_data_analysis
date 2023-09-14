@@ -6,7 +6,8 @@ from bs4 import BeautifulSoup
 import re
 import time
 
-
+# JPX週末信用残高の値を取得し、Excelファイル化する。かつ、楽天証券から浮動株数、発行済み株数、上場市場を取得する。
+# 実装が大きくなってきたのでリファクタリングしたい
 class ReadFromPDFAndRakutenCommand(IExecutable):
     def execute(self, dto: RendingDataSet) -> RendingDataSet:
         file_path = dto.pdf_file_path
@@ -72,9 +73,10 @@ class ReadFromPDFAndRakutenCommand(IExecutable):
                     ratio_to_float_sales=0.0,
                     ratio_to_float_purchases=0.0,
                     ratio_to_shares_outstanding_purchases=0.0,
-                    ratio_to_shares_outstanding_sale=0.0
+                    ratio_to_shares_outstanding_sale=0.0,
+                    market=""
                 )
-                get_rakten_float_and_outstanding(rendingdto)
+                get_rakten_float_and_outstanding_and_Market(rendingdto)
                 print(rendingdto.code)
                 dto.stock_list[int(rendingdto.code)] = rendingdto
                 # print(dto.stock_list[int(rendingdto.code)])
@@ -136,3 +138,67 @@ def get_rakten_float_and_outstanding(dto: RendingDTO) -> RendingDTO:
             return dto
     print(f'Retries exceeded ({max_retries}). Unable to retrieve data.')
     return dto
+
+def get_rakten_float_and_outstanding_and_Market(dto: RendingDTO) -> RendingDTO:
+    print(dto.code)
+    url = f'https://www.trkd-asia.com/rakutensec/quote.jsp?ric={dto.code}.T&c=ja&ind=2'
+    print(url)
+    max_retries = 10
+    retry_count = 0
+
+    while retry_count < max_retries:
+        try:
+            response = requests.get(url, timeout=10)
+            soup = BeautifulSoup(response.text, 'html.parser')
+
+            table = soup.find('table', class_='js-table-values')
+
+            target_th = soup.find('th', text='発行済株式数')
+
+            # 見つかった<th>要素の次の<td>要素の値を取得する
+            if target_th:
+                next_td = target_th.find_next('td')
+                value = next_td.text
+                # カンマを取り除いて数値に変換
+                value = re.sub(r'[^\d.]', '', value)
+                value = value[:-2]  # ".0"を削除
+                dto.stock_shares_outstanding = int(value)  # 整数に変換して格納
+                if dto.code == "7692":
+                    print(dto.stock_shares_outstanding)
+
+            target_th = soup.find('th', text='浮動株数')
+
+            # 見つかった<th>要素の次の<td>要素の値を取得する
+            if target_th:
+                next_td = target_th.find_next('td')
+                value = next_td.text
+                # カンマを取り除いて数値に変換
+                value = re.sub(r'[^\d.]', '', value)
+                value = value[:-2]  # ".0"を削除
+                dto.stock_float = int(value)  # 整数に変換して格納
+                if dto.code == "7692":
+                    print(dto.stock_float)
+
+            target_th = soup.find('th', text='上場市場')
+
+            # 見つかった<th>要素の次の<td>要素の値を取得する
+            if target_th:
+                next_td = target_th.find_next('td')
+                value = next_td.text
+
+                dto.market = value  # 上場市場はそのままの値を格納:"東証P"、"東証G"等
+                if dto.code == "7692":
+                    print(dto.market)
+
+            # time.sleep(1)  # 3秒待機
+            return dto
+        except requests.Timeout:
+            print(f'Request timed out. Retrying ({retry_count+1}/{max_retries})...')
+            retry_count += 1
+            time.sleep(10)  # 1秒待機してからリトライ
+        except Exception as e:
+            print(f'An error occurred: {str(e)}')
+            return dto
+    print(f'Retries exceeded ({max_retries}). Unable to retrieve data.')
+    return dto
+

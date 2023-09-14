@@ -1,8 +1,8 @@
-import os
-import openpyxl
 from RendingDTO import RendingDataSet
-from IExecutable import IExecutable
-from datetime import datetime
+
+# 週間のデータをExcelの"Rending Ratio"シートに書き出す。
+# 実装が大きくなってきたのでリファクタリングしたいが、Excelが表である以上、行ごとのループ、
+# かつ、各種データ項目は増える方向にしか行かない。ループスコープが大きくなるのは仕方ないかも。
 
 
 class WriteWeeklyRatioDataToExcelCommand:
@@ -12,7 +12,7 @@ class WriteWeeklyRatioDataToExcelCommand:
         rending_ratio_worksheet = dto.excel_workbook.create_sheet(title="Rending Ratio")
 
         headers = [
-            "銘柄名", "コード", "売り残高＋貸株残高", "浮動株数", "発行済み株数", "売り残高＋貸株残高/\n浮動株数", "売り残高＋貸株残/\n発行済み株数", "売り残高＋貸株残高前週比", "売り残高＋貸株残高/\n買残高", "売残高", "売残高前週比", "貸株残高", "貸株残高前週比",
+            "銘柄名", "コード", "市場", "売り残高＋貸株残高", "浮動株数", "発行済み株数", "売り残高＋貸株残高/\n浮動株数", "売り残高＋貸株残/\n発行済み株数", "売り残高＋貸株残高前週比", "売り残高＋貸株残高/\n買残高", "売残高", "売残高前週比", "貸株残高", "貸株残高前週比",
             "買残高", "買残高前週比", "一般信用売残高", "一般信用売残高前週比", "制度信用売残高", "制度信用売残高前週比",
             "一般信用買残高", "一般信用買残高前週比", "制度信用買残高", "一般信用買残高前週比"
         ]
@@ -77,6 +77,7 @@ class WriteWeeklyRatioDataToExcelCommand:
             row_data = [
                 dto.stock_list[int(shortcode)].name,  # 銘柄名
                 dto.stock_list[int(shortcode)].code,
+                dto.stock_list[int(shortcode)].market, #上場市場名
                 total_sales_and_lending,  # 売り残高＋貸株残高
                 dto.stock_list[int(shortcode)].stock_float, # 浮動株数
                 dto.stock_list[int(shortcode)].stock_shares_outstanding, #発行済み株数
