@@ -102,7 +102,7 @@ class WriteWeeklyRatioDataToExcelCommand:
             ]
 
             rending_ratio_worksheet.append(row_data)
-        rending_ratio_worksheet.freeze_panes = 'A2'
+        rending_ratio_worksheet.freeze_panes = 'C2'
 
         # ファイルを保存する前にデフォルトの "Sheet" シートを削除する
         if 'Sheet' in dto.excel_workbook.sheetnames:
