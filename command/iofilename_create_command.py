@@ -5,7 +5,7 @@ import os
 
 #JPXのpdfファイルと日証協のexcelファイルのInput/Outputファイル名を曜日から決めるコマンド
 #火曜、木曜、金曜のいずれかが祝日だとファイル名の日付部分がずれる。
-#その場合は公団のコマンドでエラーとなる。
+#その場合は後段のコマンドでエラーとなる。
 
 
 class IOfilenameCreateCommand(IExecutable):
