@@ -7,6 +7,10 @@ from command.write_weekly_float_ratio_to_excelfile import WriteWeeklyRatioDataTo
 from command.convert_xls_to_xlsx_command import ConvertXLSCommand
 from command.download_files_command import DownloadFilesCommand
 from command.iofilename_create_command import IOfilenameCreateCommand
+from command.move_rendingdatasheet_to_first_command import MoveRendingDataSheetToFirstCommand
+from command.ajust_column_width_command import AdjustColumnWidthCommand
+from command.execute_descend_command import ExecuteDescendCommand
+from command.reSave_command import ReSaveCommand
 
 
 class AutoRendingAnalysisFactory:
@@ -27,5 +31,9 @@ class AutoRendingAnalysisFactory:
                                        ConvertXLSCommand(),
                                        ReadNisshoKyoDataFromExcelCommand(),
                                        WriteWeeklyDataToExcelCommand(),
-                                       WriteWeeklyRatioDataToExcelCommand()]
+                                       WriteWeeklyRatioDataToExcelCommand(),
+                                       MoveRendingDataSheetToFirstCommand(),
+                                       AdjustColumnWidthCommand(),
+                                       ExecuteDescendCommand()
+                                       ]
         return commands

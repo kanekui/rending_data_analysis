@@ -69,7 +69,7 @@ class ReadFromPDFCommand(IExecutable):
                 )
                 # get_rakten_float_and_outstanding(rendingdto)
                 print(rendingdto.code)
-                dto.stock_list[rendingdto.code] = rendingdto
+                dto.stock_list[str(rendingdto.code)] = rendingdto
 
         dto.weekly_outstanding_data = extracted_lines
         # print(dto.stock_list)

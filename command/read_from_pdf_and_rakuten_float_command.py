@@ -47,7 +47,7 @@ class ReadFromPDFAndRakutenCommand(IExecutable):
             if len(line) < 7:
                 continue
             if str(line[1])[-1] == '0':
-                code = int(line[1][0:4])
+                code = line[1][0:4]
             else:
                 code = None
 
@@ -78,7 +78,7 @@ class ReadFromPDFAndRakutenCommand(IExecutable):
                 )
                 get_rakten_float_and_outstanding_and_Market(rendingdto)
                 print(rendingdto.code)
-                dto.stock_list[int(rendingdto.code)] = rendingdto
+                dto.stock_list[str(rendingdto.code)] = rendingdto
                 # print(dto.stock_list[int(rendingdto.code)])
 
         dto.weekly_outstanding_data = extracted_lines

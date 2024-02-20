@@ -16,6 +16,7 @@ class ConvertXLSCommand(IExecutable):
         new_file_path = file_name + ".xlsx"
 
         # XLSファイルを読み込んでDataFrameに変換
+        print(file_path)
         df = pd.read_excel(file_path, sheet_name=None)
 
         # DataFrameを新しいExcelファイルに書き込む
