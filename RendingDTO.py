@@ -18,7 +18,9 @@ class RendingDTO:
     ratio_to_float_purchases: float                 # 買い残高/浮動株
     ratio_to_shares_outstanding_sale: float         # 売り残高/発行済み株数
     ratio_to_shares_outstanding_purchases: float    # 買い残高/発行済み株数
-    market: str                                      # 上場市場
+    market: str                                     # 上場市場
+    stock_price: int                                # 本日株価
+    vwap: float                                     # vwap
 
 
 class RendingDataSet:

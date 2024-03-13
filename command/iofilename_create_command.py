@@ -53,8 +53,8 @@ class IOfilenameCreateCommand(IExecutable):
         elif weekday == 1:  # 火曜日の場合
             dto.pdf_file_path = current_folder_path + "\\" + f'syumatsu2024{four_days_ago_str}00.pdf'
             dto.pdf_file_url = f'https://www.jpx.co.jp/markets/statistics-equities/margin/tvdivq0000001rnl-att/syumatsu2024{four_days_ago_str}00.pdf'
-            dto.nisshokyo_file_path = current_folder_path + "\\" + f'2024{eleven_days_ago_str}z.xls'
-            dto.nisshokyo_file_url = f'https://www.jsda.or.jp/shiryoshitsu/toukei/kabu-taiw/files/2024{eleven_days_ago_str}z.xls'
+            dto.nisshokyo_file_path = current_folder_path + "\\" + f'2024{twelve_days_ago_str}z.xls'
+            dto.nisshokyo_file_url = f'https://www.jsda.or.jp/shiryoshitsu/toukei/kabu-taiw/files/2024{twelve_days_ago_str}z.xls'
         elif weekday == 2:  # 水曜日の場合(月曜or火曜が祝日)
             dto.pdf_file_path = current_folder_path + "\\" + f'syumatsu2024{five_days_ago_str}00.pdf'
             dto.pdf_file_url = f'https://www.jpx.co.jp/markets/statistics-equities/margin/tvdivq0000001rnl-att/syumatsu2024{five_days_ago_str}00.pdf'

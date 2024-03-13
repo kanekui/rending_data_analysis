@@ -74,10 +74,18 @@ class ReadFromPDFAndRakutenCommand(IExecutable):
                     ratio_to_float_purchases=0.0,
                     ratio_to_shares_outstanding_purchases=0.0,
                     ratio_to_shares_outstanding_sale=0.0,
-                    market=""
+                    market="",
+                    stock_price=0,
+                    vwap=0
                 )
                 get_rakten_float_and_outstanding_and_Market(rendingdto)
-                print(rendingdto.code)
+                # print(rendingdto.code)
+                #get_matsui_stockvalue_and_vwap(rendingdto)
+                get_sbi_stockvalue_and_vwap(rendingdto)
+
+                print(rendingdto.stock_price)
+                print(rendingdto.vwap)
+
                 dto.stock_list[str(rendingdto.code)] = rendingdto
                 # print(dto.stock_list[int(rendingdto.code)])
 
@@ -140,9 +148,9 @@ def get_rakten_float_and_outstanding(dto: RendingDTO) -> RendingDTO:
     return dto
 
 def get_rakten_float_and_outstanding_and_Market(dto: RendingDTO) -> RendingDTO:
-    print(dto.code)
+    # print(dto.code)
     url = f'https://www.trkd-asia.com/rakutensec/quote.jsp?ric={dto.code}.T&c=ja&ind=2'
-    print(url)
+    # print(url)
     max_retries = 10
     retry_count = 0
 
@@ -201,4 +209,97 @@ def get_rakten_float_and_outstanding_and_Market(dto: RendingDTO) -> RendingDTO:
             return dto
     print(f'Retries exceeded ({max_retries}). Unable to retrieve data.')
     return dto
+
+
+def get_matsui_stockvalue_and_vwap(dto: RendingDTO) -> RendingDTO:
+    # print(dto.code)
+    url = f'https://finance.matsui.co.jp/stock/{dto.code}/index'
+    headers = {'User-agent': 'Mozilla/5.0'}
+    # print(url)
+    max_retries = 10
+    retry_count = 0
+
+    while retry_count < max_retries:
+        try:
+            response = requests.get(url, headers=headers, timeout=10)
+            # print(response.text)
+            soup = BeautifulSoup(response.text, 'html.parser')
+
+            # table = soup.find('table', class_='js-table-values')
+            # print(table)
+
+            # 特定のクラス内の要素を取得
+            stock_price_element = soup.select_one('.m-stock-price strong')
+            # print(stock_price_element.text.strip())
+
+            # 要素が存在するか確認してからテキストを取得
+            if stock_price_element:
+                stock_price = stock_price_element.text.strip()
+            else:
+                stock_price = 0
+                print(response.text)
+
+            # VWAPの要素を取得
+            vwap_element = soup.select_one('th:contains("VWAP") + td')
+
+            # 要素が存在するか確認してからテキストを取得
+            if vwap_element:
+                vwap_value = vwap_element.text.strip()
+            else:
+                vwap_value = 0
+
+            # dto.stock_price = int(stock_price)
+            dto.stock_price = int(float(stock_price.replace(',', '')))
+            dto.vwap = vwap_value
+
+            print(dto.stock_price)
+
+            time.sleep(3)
+
+            return dto
+        except requests.Timeout:
+            print(f'Request timed out. Retrying ({retry_count+1}/{max_retries})...')
+            retry_count += 1
+            time.sleep(10)  # 1秒待機してからリトライ
+        except Exception as e:
+            print(f'An error occurred: {str(e)}')
+            return dto
+    print(f'Retries exceeded ({max_retries}). Unable to retrieve data.')
+    return dto
+
+def get_sbi_stockvalue_and_vwap(dto: RendingDTO) -> RendingDTO:
+    # print(dto.code)
+    url = f'https://www.sbisec.co.jp/ETGate/?_ControlID=WPLETsiR001Control&_PageID=WPLETsiR001Idtl10&_DataStoreID=DSWPLETsiR001Control&_ActionID=stockDetail&s_rkbn=2&s_btype=&i_stock_sec=3133&i_dom_flg=1&i_exchange_code=JPN&i_output_type=0&exchange_code=TKY&stock_sec_code_mul={dto.code}&ref_from=1&ref_to=20&wstm4130_sort_id=&wstm4130_sort_kbn=&qr_keyword=1&qr_suggest=1&qr_sort=1'
+    headers = {'User-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+               'Accept-Language': 'ja,en-US;q=0.9,en;q=0.8'}
+
+    # print(url)
+    max_retries = 10
+    retry_count = 0
+
+    while retry_count < max_retries:
+        try:
+            response = requests.get(url, headers=headers,  timeout=10)
+            # print(response.text)
+            # BeautifulSoupを使用してHTMLを解析
+            soup = BeautifulSoup(response.text, 'html.parser')
+            # print(soup)
+            # 特定の位置の要素を取得
+            current_value = soup.find('div', class_='kabuNowStatus').find('span', class_='fxx01').text
+            dto.stock_price = int(float(current_value.replace(',', '')))
+
+            # VWAPの値を取得
+            vwap_value = soup.find('th', text='VWAP').find_next('td').find('span', class_='fm01').text
+            dto.vwap = float(vwap_value.replace(',', ''))
+
+            return dto
+
+        except requests.Timeout:
+            print(f'Request timed out. Retrying ({retry_count+1}/{max_retries})...')
+            retry_count += 1
+            time.sleep(10)  # 1秒待機してからリトライ
+        except Exception as e:
+            print(f'An error occurred: {str(e)}')
+            return dto
+    print(f'Retries exceeded ({max_retries}). Unable to retrieve data.')
 

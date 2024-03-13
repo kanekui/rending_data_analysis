@@ -2,13 +2,19 @@ import pandas as pd
 from IExecutable import IExecutable
 from RendingDTO import RendingDataSet
 import requests
-import PyPDF2
+import os
 
 #JPXのpdfファイルと日証協のexcelファイルをダウンロードしてDTOのファイルパスに格納
 class DownloadFilesCommand(IExecutable):
     def execute(self, dto: RendingDataSet) -> RendingDataSet:
         nisshokyo_file_url = dto.nisshokyo_file_url
         jpx_file_url = dto.pdf_file_url
+
+        print(jpx_file_url)
+
+        current_folder_path = os.getcwd()
+        dto.nisshokyo_file_path = current_folder_path + "//" + nisshokyo_file_url.split("/")[-1]
+        dto.pdf_file_path = current_folder_path + "//" + jpx_file_url.split("/")[-1]
 
         # 日証協のExcelファイルをダウンロード
         nisshokyo_response = requests.get(nisshokyo_file_url)

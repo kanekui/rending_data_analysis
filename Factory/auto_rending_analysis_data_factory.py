@@ -6,11 +6,12 @@ from command.read_nisshokyo_data_from_excel_command import ReadNisshoKyoDataFrom
 from command.write_weekly_float_ratio_to_excelfile import WriteWeeklyRatioDataToExcelCommand
 from command.convert_xls_to_xlsx_command import ConvertXLSCommand
 from command.download_files_command import DownloadFilesCommand
-from command.iofilename_create_command import IOfilenameCreateCommand
+from command.get_jpx_url_command import JPXUrlCreateCommand
+from command.get_nisshoyo_url_command import NisshokyoUrlCreateCommand
 from command.move_rendingdatasheet_to_first_command import MoveRendingDataSheetToFirstCommand
 from command.ajust_column_width_command import AdjustColumnWidthCommand
 from command.execute_descend_command import ExecuteDescendCommand
-from command.reSave_command import ReSaveCommand
+
 
 
 class AutoRendingAnalysisFactory:
@@ -25,7 +26,9 @@ class AutoRendingAnalysisFactory:
         #5.3でxlsx化した銘柄別株券等貸借週末残高のデータを読み込み
         #6.2のデータをxlsxで保存
         #7.信用売り+貸株を合計してから対浮動株数、対発行済み株数で比を取ってからxlsxに保存
-        commands: List[IExecutable] = [IOfilenameCreateCommand(),
+        commands: List[IExecutable] = [#IOfilenameCreateCommand(),
+                                       JPXUrlCreateCommand(),
+                                       NisshokyoUrlCreateCommand(),
                                        DownloadFilesCommand(),
                                        ReadFromPDFAndRakutenCommand(),
                                        ConvertXLSCommand(),

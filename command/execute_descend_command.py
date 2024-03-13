@@ -14,7 +14,7 @@ from openpyxl.utils.dataframe import dataframe_to_rows
 class ExecuteDescendCommand(IExecutable):
 
     SHEET_NAME = "Rending Ratio"
-    TARGET_COLUMN = "D"
+    # TARGET_COLUMN = "D"
     TARGET_WIDTH = 17.73
 
     def execute(self, dto: RendingDataSet) -> RendingDataSet:
@@ -25,7 +25,7 @@ class ExecuteDescendCommand(IExecutable):
         wb = excel.Workbooks.Open(filename)
         sheet = wb.Worksheets(1)
 
-        sheet.Columns("A:X").Sort(Key1=sheet.Range("G2"), Order1=2, Header=1)
+        sheet.Columns("A:X").Sort(Key1=sheet.Range("H2"), Order1=2, Header=1)
 
         # ワークブックを保存
         wb.Save()

@@ -12,7 +12,7 @@ class WriteWeeklyRatioDataToExcelCommand:
         rending_ratio_worksheet = dto.excel_workbook.create_sheet(title="Rending Ratio")
 
         headers = [
-            "銘柄名", "コード", "市場", "売り残高＋貸株残高", "浮動株数", "発行済み株数", "売り残高＋貸株残高/\n浮動株数",
+            "銘柄名", "コード", "市場", "売り残高＋貸株残高", "浮動株数", "浮動株時価総額", "発行済み株数", "売り残高＋貸株残高/\n浮動株数",
             "売り残高＋貸株残/\n発行済み株数", "売り残高＋貸株残高前週比", "売り残高＋貸株残高前週比率", "売り残高＋貸株残高/\n買残高",
             "売残高", "売残高前週比", "貸株残高", "貸株残高前週比", "買残高", "買残高前週比", "買残高前週比率", "一般信用売残高", "一般信用売残高前週比",
             "制度信用売残高", "制度信用売残高前週比", "一般信用買残高", "一般信用買残高前週比", "制度信用買残高", "一般信用買残高前週比"
@@ -81,6 +81,9 @@ class WriteWeeklyRatioDataToExcelCommand:
                 total_sales_and_lending_outstanding_ratio = 0
             else:
                 total_sales_and_lending_outstanding_ratio = row[5] / float(dto.stock_list[shortcode].stock_shares_outstanding)
+            #print(dto.stock_list[shortcode].stock_float)
+            #print(dto.stock_list[shortcode].vwap)
+            stock_float_total_value = dto.stock_list[shortcode].stock_float * dto.stock_list[shortcode].stock_price
 
             if (diff_sales_and_lending == '-') or (total_sales_and_lending == '-') :
                 diff_sales_and_lending_ratio = 0
@@ -108,6 +111,7 @@ class WriteWeeklyRatioDataToExcelCommand:
                 dto.stock_list[shortcode].market, #上場市場名
                 total_sales_and_lending,  # 売り残高＋貸株残高
                 dto.stock_list[shortcode].stock_float, # 浮動株数
+                stock_float_total_value, # 浮動株時価総額
                 dto.stock_list[shortcode].stock_shares_outstanding, #発行済み株数
                 total_sales_and_lending_float_ratio,  # "売り残高＋貸株残高/浮動株数"
                 total_sales_and_lending_outstanding_ratio,  # "売り残高＋貸株残高/浮動株数"
