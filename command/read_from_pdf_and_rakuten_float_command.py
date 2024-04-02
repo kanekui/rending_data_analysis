@@ -83,8 +83,8 @@ class ReadFromPDFAndRakutenCommand(IExecutable):
                 #get_matsui_stockvalue_and_vwap(rendingdto)
                 get_sbi_stockvalue_and_vwap(rendingdto)
 
-                print(rendingdto.stock_price)
-                print(rendingdto.vwap)
+                # print(rendingdto.stock_price)
+                # print(rendingdto.vwap)
 
                 dto.stock_list[str(rendingdto.code)] = rendingdto
                 # print(dto.stock_list[int(rendingdto.code)])
