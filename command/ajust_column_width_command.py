@@ -23,15 +23,16 @@ class AdjustColumnWidthCommand(IExecutable):
         sheet.column_dimensions["D"].width = 17.73
         sheet.column_dimensions["E"].width = 15.45
         sheet.column_dimensions["F"].width = 14.00
-        sheet.column_dimensions["G"].width = 20.00
-        sheet.column_dimensions["H"].width = 17.18
+        sheet.column_dimensions["G"].width = 14.00
+        sheet.column_dimensions["H"].width = 24.00
         sheet.column_dimensions["I"].width = 19.09
-        sheet.column_dimensions["H"].width = 17.18
-        sheet.column_dimensions["J"].width = 19.27
+        sheet.column_dimensions["J"].width = 18.00
+        sheet.column_dimensions["K"].width = 14.00
+        sheet.column_dimensions["L"].width = 19.27
         sheet.row_dimensions[1].height = 26
-        sheet.cell(row=1, column=7).alignment = Alignment(wrap_text=True)
         sheet.cell(row=1, column=8).alignment = Alignment(wrap_text=True)
-        sheet.cell(row=1, column=10).alignment = Alignment(wrap_text=True)
+        sheet.cell(row=1, column=9).alignment = Alignment(wrap_text=True)
+        sheet.cell(row=1, column=11).alignment = Alignment(wrap_text=True)
 
         # sheet.auto_filter.ref = sheet.dimensions
         # sheet.auto_filter.add_sort_condition("G2:G{}".format(sheet.max_row), descending=True)

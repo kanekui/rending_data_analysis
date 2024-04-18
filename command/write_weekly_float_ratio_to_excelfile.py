@@ -13,7 +13,7 @@ class WriteWeeklyRatioDataToExcelCommand:
 
         headers = [
             "銘柄名", "コード", "市場", "売り残高＋貸株残高", "浮動株数", "浮動株時価総額", "発行済み株数", "売り残高＋貸株残高/\n浮動株数",
-            "売り残高＋貸株残/\n発行済み株数", "売り残高＋貸株残高前週比", "売り残高＋貸株残高前週比率", "売り残高＋貸株残高/\n買残高",
+            "売り残高＋貸株残/\n発行済み株数", "買い残高/浮動株数", "買い残高/発行済み株数", "売り残高＋貸株残高前週比", "売り残高＋貸株残高前週比率", "売り残高＋貸株残高/\n買残高",
             "売残高", "売残高前週比", "貸株残高", "貸株残高前週比", "買残高", "買残高前週比", "買残高前週比率", "一般信用売残高", "一般信用売残高前週比",
             "制度信用売残高", "制度信用売残高前週比", "一般信用買残高", "一般信用買残高前週比", "制度信用買残高", "一般信用買残高前週比"
         ]
@@ -76,11 +76,13 @@ class WriteWeeklyRatioDataToExcelCommand:
                 total_sales_and_lending_float_ratio = 0
             else:
                 total_sales_and_lending_float_ratio = total_sales_and_lending / float(dto.stock_list[shortcode].stock_float)
+                outstanding_float_ratio = row[5] / float(dto.stock_list[shortcode].stock_float)
 
             if float(dto.stock_list[shortcode].stock_shares_outstanding) == 0:
                 total_sales_and_lending_outstanding_ratio = 0
             else:
-                total_sales_and_lending_outstanding_ratio = row[5] / float(dto.stock_list[shortcode].stock_shares_outstanding)
+                total_sales_and_lending_outstanding_ratio = total_sales_and_lending / float(dto.stock_list[shortcode].stock_shares_outstanding)
+                outstanding_shares_ratio = row[5] / float(dto.stock_list[shortcode].stock_shares_outstanding)
             #print(dto.stock_list[shortcode].stock_float)
             #print(dto.stock_list[shortcode].vwap)
             stock_float_total_value = dto.stock_list[shortcode].stock_float * dto.stock_list[shortcode].stock_price
@@ -114,7 +116,9 @@ class WriteWeeklyRatioDataToExcelCommand:
                 stock_float_total_value, # 浮動株時価総額
                 dto.stock_list[shortcode].stock_shares_outstanding, #発行済み株数
                 total_sales_and_lending_float_ratio,  # "売り残高＋貸株残高/浮動株数"
-                total_sales_and_lending_outstanding_ratio,  # "売り残高＋貸株残高/浮動株数"
+                total_sales_and_lending_outstanding_ratio,  # "売り残高＋貸株残高/発行済み数"
+                outstanding_float_ratio,    # "買い高/浮動株数"
+                outstanding_shares_ratio,   # "買い高/発行済み株数"
                 diff_sales_and_lending,  # 売り残高＋貸株残高先週比
                 diff_sales_and_lending_ratio,  # 売り残高＋貸株残高先週比率
                 ratio_sales_and_lending_purchases, # "売り残高＋貸株残高/買残高"
