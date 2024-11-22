@@ -1,5 +1,7 @@
 import IExecutable
 from typing import List
+
+from command.iofilename_create_command import IOfilenameCreateCommand
 from command.read_from_pdf_and_rakuten_float_command import ReadFromPDFAndRakutenCommand
 from command.write_weekly_to_excelfile import WriteWeeklyDataToExcelCommand
 from command.read_nisshokyo_data_from_excel_command import ReadNisshoKyoDataFromExcelCommand
@@ -26,7 +28,7 @@ class AutoRendingAnalysisFactory:
         #5.3でxlsx化した銘柄別株券等貸借週末残高のデータを読み込み
         #6.2のデータをxlsxで保存
         #7.信用売り+貸株を合計してから対浮動株数、対発行済み株数で比を取ってからxlsxに保存
-        commands: List[IExecutable] = [#IOfilenameCreateCommand(),
+        commands: List[IExecutable] = [IOfilenameCreateCommand(),
                                        JPXUrlCreateCommand(),
                                        NisshokyoUrlCreateCommand(),
                                        DownloadFilesCommand(),
