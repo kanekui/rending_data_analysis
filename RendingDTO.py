@@ -21,6 +21,7 @@ class RendingDTO:
     market: str                                     # 上場市場
     stock_price: int                                # 本日株価
     vwap: float                                     # vwap
+    volume_5days_average: float                     # 5日間平均出来高
 
 
 class RendingDataSet:

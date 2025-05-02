@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{dfaab967-84ed-4285-8f25-efaa577ee96c}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>main.py</StartupFile>
+    <SearchPath>Factory\;command\;venv\</SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterId>MSBuild|venv|$(MSBuildProjectFullPath)</InterpreterId>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="command\add_explanation_sheet_command.py" />
+    <Compile Include="command\ajust_column_width_command.py" />
+    <Compile Include="command\check_file_exist_command.py" />
+    <Compile Include="command\convert_xls_to_xlsx_command.py" />
+    <Compile Include="command\download_files_command.py" />
+    <Compile Include="command\download_jpx_pdf_file_command.py" />
+    <Compile Include="command\execute_descend_command.py" />
+    <Compile Include="command\fetch_volume_5d_Stooq_Command.py" />
+    <Compile Include="command\friday_holiday_iofilename_create_command.py" />
+    <Compile Include="command\get_filepath_command.py" />
+    <Compile Include="command\get_float_and_outstanding_command.py" />
+    <Compile Include="command\get_jpx_url_command.py" />
+    <Compile Include="command\get_nisshoyo_url_command.py" />
+    <Compile Include="command\get_yahoo_com_data_command.py" />
+    <Compile Include="command\iofilename_create_command.py" />
+    <Compile Include="command\move_rendingdatasheet_to_first_command.py" />
+    <Compile Include="command\read_from_excel_command.py" />
+    <Compile Include="command\read_from_pdf_and_rakuten_float_command.py" />
+    <Compile Include="command\read_from_pdf_command.py" />
+    <Compile Include="command\read_nisshokyo_data_from_excel_command.py" />
+    <Compile Include="command\read_rendingdata_from_worksheet.py" />
+    <Compile Include="command\reSave_command.py" />
+    <Compile Include="command\save_excel_file.py" />
+    <Compile Include="command\write_weekly_float_ratio_to_excelfile.py" />
+    <Compile Include="command\write_weekly_ratio_to_excelfile.py" />
+    <Compile Include="command\write_weekly_to_excelfile.py" />
+    <Compile Include="Factory\auto_friday_holiday_rending_analysis_data_factory.py" />
+    <Compile Include="Factory\auto_rending_analysis_data_factory.py" />
+    <Compile Include="Factory\downloded_rending_analysis_data_factory.py" />
+    <Compile Include="Factory\get_float_factory.py" />
+    <Compile Include="Factory\jpx_daily_factory.py" />
+    <Compile Include="Factory\rending_analysis_data_factory.py" />
+    <Compile Include="Factory\rending_data_marge_factory.py" />
+    <Compile Include="Factory\TestIRBKFactory.py" />
+    <Compile Include="Factory\yahoo_com_data_factory.py" />
+    <Compile Include="IExecutable.py" />
+    <Compile Include="main.py" />
+    <Compile Include="RendingDTO.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="build\main\warn-main.txt" />
+    <Content Include="build\main\xref-main.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="build\" />
+    <Folder Include="build\main" />
+    <Folder Include="command" />
+    <Folder Include="Factory" />
+  </ItemGroup>
+  <ItemGroup>
+    <Interpreter Include="venv\">
+      <Id>venv</Id>
+      <Description>venv (Python 3.11 (64-bit))</Description>
+      <InterpreterPath>Scripts\python.exe</InterpreterPath>
+      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
+      <Version>3.11</Version>
+      <Architecture>X64</Architecture>
+      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
+    </Interpreter>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
+</Project>

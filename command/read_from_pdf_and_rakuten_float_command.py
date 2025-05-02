@@ -1,3 +1,5 @@
+import csv
+import io
 import PyPDF2
 from RendingDTO import RendingDataSet, RendingDTO
 from IExecutable import IExecutable
@@ -76,12 +78,22 @@ class ReadFromPDFAndRakutenCommand(IExecutable):
                     ratio_to_shares_outstanding_sale=0.0,
                     market="",
                     stock_price=0,
-                    vwap=0
+                    vwap=0,
+                    volume_5days_average=0.0
                 )
                 get_rakten_float_and_outstanding_and_Market(rendingdto)
                 # print(rendingdto.code)
                 #get_matsui_stockvalue_and_vwap(rendingdto)
                 get_sbi_stockvalue_and_vwap(rendingdto)
+
+                # セッションを作成し、再利用する
+                #session = requests.Session()
+                #session.headers.update({
+                #    'User-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+                #    'Accept-Language': 'ja,en-US;q=0.9,en;q=0.8'
+                #})
+
+                #get_5days_average_volume_stooq_data(rendingdto, session)
 
                 # print(rendingdto.stock_price)
                 # print(rendingdto.vwap)
@@ -98,7 +110,7 @@ class ReadFromPDFAndRakutenCommand(IExecutable):
 def get_rakten_float_and_outstanding(dto: RendingDTO) -> RendingDTO:
     print(dto.code)
     url = f'https://www.trkd-asia.com/rakutensec/quote.jsp?ric={dto.code}.T&c=ja&ind=2'
-    print(url)
+   #print(url)
     max_retries = 10
     retry_count = 0
 
@@ -150,7 +162,7 @@ def get_rakten_float_and_outstanding(dto: RendingDTO) -> RendingDTO:
 def get_rakten_float_and_outstanding_and_Market(dto: RendingDTO) -> RendingDTO:
     # print(dto.code)
     url = f'https://www.trkd-asia.com/rakutensec/quote.jsp?ric={dto.code}.T&c=ja&ind=2'
-    # print(url)
+    #print(url)
     max_retries = 10
     retry_count = 0
 
@@ -273,7 +285,7 @@ def get_sbi_stockvalue_and_vwap(dto: RendingDTO) -> RendingDTO:
     headers = {'User-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
                'Accept-Language': 'ja,en-US;q=0.9,en;q=0.8'}
 
-    # print(url)
+    #print(url)
     max_retries = 10
     retry_count = 0
 
@@ -303,3 +315,42 @@ def get_sbi_stockvalue_and_vwap(dto: RendingDTO) -> RendingDTO:
             return dto
     print(f'Retries exceeded ({max_retries}). Unable to retrieve data.')
 
+    return dto
+
+# stooqのサイトから出来高5日間平均を取得する関数
+def get_5days_average_volume_stooq_data(dto: RendingDTO, session: requests.Session) -> RendingDTO:
+    url = f'https://stooq.com/q/d/l/?s={dto.code}.jp&i=d'   # CSVファイルへの直リンク
+    max_retries = 3  # 最大リトライ回数
+    retry_count = 0
+
+    while retry_count < max_retries:
+        try:
+            #time.sleep(3)  # 3秒待機して連続アクセスを避ける
+            response = session.get(url, timeout=10)
+            if response.status_code != 200:
+                raise Exception(f"HTTP error: {response.status_code}")
+
+            # CSV文字列を読み取る
+            csv_data = io.StringIO(response.text)
+            reader = csv.DictReader(csv_data)
+            # 出来高のデータをリストで取得（CSVは日付昇順の場合、末尾が最新の日付）
+            volumes = [int(row['Volume'].replace(',', '')) for row in reader if row.get('Volume') and row['Volume'].isdigit()]
+
+            if volumes:
+                # 最新5日分を取得（件数が5未満の場合は全件）
+                last5 = volumes[-5:] if len(volumes) >= 5 else volumes
+                average_volume = sum(last5) / len(last5)
+                dto.volume_5days_average = average_volume
+                return dto
+
+        except requests.exceptions.Timeout:
+            retry_count += 1
+            print(f"Timeout occurred. Retrying... ({retry_count}/{max_retries})")
+            time.sleep(5)
+        except Exception as e:
+            retry_count += 1
+            print(f"An error occurred: {e}")
+            time.sleep(5)
+
+    print("Failed to retrieve data after multiple retries.")
+    return dto

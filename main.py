@@ -19,6 +19,7 @@ from Factory.get_float_factory import GetFloatAndOutstandingFactory
 from Factory.auto_rending_analysis_data_factory import AutoRendingAnalysisFactory
 from Factory.auto_friday_holiday_rending_analysis_data_factory import AutoFridayHolidayRendingAnalysisFactory
 from RendingDTO import RendingDataSet
+from Factory.downloded_rending_analysis_data_factory import DownlodedRendingAnalysisDataFactory
 
 
 # Press the green button in the gutter to run the script.
@@ -62,6 +63,8 @@ if __name__ == '__main__':
             elif sys.argv[1] == "-I":
                 mode = "IRBKTest"
 
+            elif sys.argv[1] == "-d":
+                mode = "Download"
             else:
                 mode = "default"
                 pdf_file_path = sys.argv[1]
@@ -106,6 +109,12 @@ if __name__ == '__main__':
             case "IRBKTest":
                 print("IRBKTest")
                 command = TestIRBKFactory.create()
+
+            case "Download":
+                print("Download")
+                rending_data_set.pdf_file_path = sys.argv[2]
+                rending_data_set.nisshokyo_file_path = sys.argv[3]
+                command = DownlodedRendingAnalysisDataFactory()
 
             case "default":
                 print("default mode")

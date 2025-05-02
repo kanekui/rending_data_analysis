@@ -13,11 +13,11 @@ from command.get_nisshoyo_url_command import NisshokyoUrlCreateCommand
 from command.move_rendingdatasheet_to_first_command import MoveRendingDataSheetToFirstCommand
 from command.ajust_column_width_command import AdjustColumnWidthCommand
 from command.execute_descend_command import ExecuteDescendCommand
-from command.add_explanation_sheet_command import AddExplanationSheetCommand
+from command.get_filepath_command import GetFilepathCommand
 
 
 
-class AutoRendingAnalysisFactory:
+class DownlodedRendingAnalysisDataFactory:
 
     @staticmethod
     def create():
@@ -29,18 +29,19 @@ class AutoRendingAnalysisFactory:
         #5.3でxlsx化した銘柄別株券等貸借週末残高のデータを読み込み
         #6.2のデータをxlsxで保存
         #7.信用売り+貸株を合計してから対浮動株数、対発行済み株数で比を取ってからxlsxに保存
-        commands: List[IExecutable] = [IOfilenameCreateCommand(),
-                                       JPXUrlCreateCommand(),
-                                       NisshokyoUrlCreateCommand(),
-                                       DownloadFilesCommand(),
+        commands: List[IExecutable] = [
+                                       #IOfilenameCreateCommand(),
+                                       #JPXUrlCreateCommand(),
+                                       #NisshokyoUrlCreateCommand(),
+                                       #DownloadFilesCommand(),
+                                       #GetFilepathCommand(),
                                        ReadFromPDFAndRakutenCommand(),
                                        ConvertXLSCommand(),
                                        ReadNisshoKyoDataFromExcelCommand(),
                                        WriteWeeklyDataToExcelCommand(),
                                        WriteWeeklyRatioDataToExcelCommand(),
                                        MoveRendingDataSheetToFirstCommand(),
-                                       AddExplanationSheetCommand(),
                                        AdjustColumnWidthCommand(),
-                                       ExecuteDescendCommand()                                       
+                                       ExecuteDescendCommand()
                                        ]
         return commands

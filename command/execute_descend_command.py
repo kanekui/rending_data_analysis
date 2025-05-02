@@ -20,7 +20,11 @@ class ExecuteDescendCommand(IExecutable):
     def execute(self, dto: RendingDataSet) -> RendingDataSet:
 
         excel = win32com.client.Dispatch("Excel.Application")
-        excel.DisplayAlerts = False
+
+        # DisplayAlertsを無効化する方法
+        excel.Visible = False
+        excel.Application.DisplayAlerts = False  # 修正: 正しい方法でプロパティを設定
+
         filename = "E:\\Finance\\rendinganalysis\\" + dto.out_filepath
         wb = excel.Workbooks.Open(filename)
         sheet = wb.Worksheets(1)
